@@ -1,14 +1,8 @@
 mod sentinel;
-use crate::sentinel::instance;
-use winit::event_loop::EventLoop;
-
+use winit::event::{Event, WindowEvent};
+use winit::event_loop::ControlFlow;
 fn main() {
-    let event_loop = EventLoop::new();
-    // instance
-    instance::create_vulkan_instance(&event_loop);
-
-    // surface
-
+    let sentinel_surface = sentinel::surface::SentinelSurface::new();
     // physical device
     // logical device
     // queue creation
@@ -24,4 +18,13 @@ fn main() {
     // command buffers
 
     // event loop
+    sentinel_surface
+        .event_loop
+        .run(move |event, _, control_flow| match event {
+            Event::WindowEvent {
+                event: WindowEvent::CloseRequested,
+                ..
+            } => *control_flow = ControlFlow::Exit,
+            _ => (),
+        })
 }
