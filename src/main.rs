@@ -20,6 +20,10 @@ fn main() {
     // event loop
     sentinel_surface
         .event_loop
+        // event loop takes a Fn as an argument, event_handler
+        // here we use a closure to define it inline
+        // the closure must be a move closure in order to capture each events environment
+        // the event_handler fn dispatches each event to a control flow
         .run(move |event, _, control_flow| match event {
             Event::WindowEvent {
                 event: WindowEvent::CloseRequested,
